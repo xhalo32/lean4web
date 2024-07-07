@@ -116,5 +116,43 @@ Install [npm](https://www.npmjs.com/) and clone this repository. Inside the repo
 
 The project can be accessed via http://localhost:3000. (Internally, websocket requests to `ws://localhost:3000/`websockets will be forwarded to a Lean server running on port 8080.)
 
+## Nix instructions
+
+This project is using [node2nix](https://github.com/svanderburg/node2nix) to bundle the Node.js dependencies in Nix.
+
+> The node2nix project was initialized with `nix run github:xhalo32/node2nix -- -18 -d`
+
+### Client
+
+The client web application can be built with Nix using the following command
+
+```shell
+nix build -L .#lean4web
+```
+
+To start a development shell, run
+
+```shell
+nix-shell -A shell
+```
+
+### Proxy OCI container
+
+The client can be bundled into an nginx container, where websocket connections are proxied to https://live.lean-lang.org.
+
+To build and load the container into podman, run
+
+```shell
+podman load <(nix build -L .#client-proxy-oci --print-out-paths)
+```
+
+> This is for the fish shell. Bash users can run `podman load < $(nix build -L .#client-proxy-oci --print-out-paths)`
+
+To run the container, execute
+
+```shell
+podman run --rm -p 8080:80 localhost/lean4web-client-proxy:latest
+```
+
 ## Running different projects
 You can run any lean project through the webeditor by cloning them to the `Projects/` folder. See [Adding Projects](Projects/README.md) for further instructions.
