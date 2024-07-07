@@ -10,11 +10,11 @@ import {
   DidChangeTextDocumentParams,
   DidCloseTextDocumentParams,
   InitializeResult,
-  MonacoLanguageClient as LanguageClient,
   LanguageClientOptions,
   PublishDiagnosticsParams,
-  CloseAction, ErrorAction, IConnectionProvider,
-} from 'monaco-languageclient'
+  CloseAction, ErrorAction,
+} from 'vscode-languageclient'
+import {MonacoLanguageClient as LanguageClient, IConnectionProvider} from 'monaco-languageclient'
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api.js'
 import { State } from 'vscode-languageclient'
 import * as ls from 'vscode-languageserver-protocol'
@@ -185,7 +185,7 @@ export class LeanClient implements Disposable {
       this.client = new LanguageClient({
         id: 'lean4',
         name: 'Lean 4',
-        clientOptions,
+        clientOptions: clientOptions as any,
         connectionProvider: this.connectionProvider
       })
     }

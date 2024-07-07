@@ -8,7 +8,8 @@ import { loadWASM } from 'onigasm'
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api.js'
 import { MonacoServices } from 'monaco-languageclient';
 import { StandaloneServices } from 'vscode/services';
-import getMessageServiceOverride from 'vscode/service-override/messages';
+import getNotificationServiceOverride from 'vscode/service-override/notifications'
+import getDialogsServiceOverride from 'vscode/service-override/dialogs'
 //@ts-ignore
 import onigasmUrl from 'onigasm/lib/onigasm.wasm?url'
 import * as lightPlusTheme from './css/lightPlus.json'
@@ -16,7 +17,8 @@ import * as lightPlusTheme from './css/lightPlus.json'
 export function monacoSetup () {
 
   StandaloneServices.initialize({
-    ...getMessageServiceOverride(document.body)
+    ...getNotificationServiceOverride(),
+    ...getDialogsServiceOverride(),
   });
 
   // install Monaco language client services
